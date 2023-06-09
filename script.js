@@ -1,5 +1,6 @@
-const lenghtSlider = document.querySelector(".pass-lenght input");
-const options = document.querySelectorAll(".options input");
+const lengthSlider = document.querySelector(".pass-length input");
+const options =
+  document.querySelectorAll(".options input"); /* возможно опечатка*/
 const copyIcon = document.querySelector(".input-box span");
 const passwordInput = document.querySelector(".input-box input");
 const passwordIndicate = document.querySelector(".pass-indicator");
@@ -14,29 +15,29 @@ const characters = {
 
 const generatePassword = () => {
   let staticPassword = "";
-  randomPassword = "";
-  encludeDuplicate = false;
-  passLenght = lenghtSlider.value;
+  let randomPassword = "";
+  let excludeDuplicate = false;
+  let passLength = lengthSlider.value;
 
   options.forEach((options) => {
-    if (options.cheched) {
+    if (options.checked) {
       if (options.id !== "exc-dublicate" && options.id !== "spaces") {
         staticPassword += characters[options.id];
       } else if (options.id === "spaces") {
         staticPassword += "  ${staticPassword}  ";
       } else {
-        encludeDuplicate = true;
+        excludeDuplicate = true;
       }
     }
   });
 
-  for (let i = 0; i < passLenght; i++) {
+  for (let i = 0; i < passLength; i++) {
     let randomChar =
       staticPassword[Math.floor(Math.random() * staticPassword.length)];
-    if (encludeDuplicate) {
-      !randomPassword.inclides(randomChar) | (randomChar == "")
+    if (excludeDuplicate) {
+      !randomPassword.includes(randomChar) | (randomChar == " ")
         ? (randomPassword += randomChar)
-        : i--;
+        : i--; /* не совсем понятно*/
     } else {
       randomPassword += randomChar;
     }
@@ -44,26 +45,26 @@ const generatePassword = () => {
   passwordInput.value = randomPassword;
 };
 
-const udatePassIndicator = () => {
+const updatePassIndicator = () => {
   passwordIndicate.id =
-    lenghtSlider.value <= 8
-      ? "Слабый пароль"
-      : lenghtSlider.value <= 16
-      ? "Средняя надёжность"
-      : "Отличный пароль"; /*возможно тут ошибка .. замена на  passwordIndicate*/
+    lengthSlider.value <= 8
+      ? "weak"
+      : lengthSlider.value <= 16
+      ? "medium"
+      : "strong";
 };
 
 const updateSlider = () => {
-  document.querySelector(".pass-lenght span").innerText = lenghtSlider.value;
+  document.querySelector(".pass-length span").innerText = lengthSlider.value;
   generatePassword();
-  udatePassIndicator();
+  updatePassIndicator();
 };
 
 updateSlider();
 
 const copyPassword = () => {
   navigator.clipboard.writeText(passwordInput.value);
-  copyIcon.innerText = "Checked";
+  copyIcon.innerText = "check";
   copyIcon.style.color = "#4285f4";
   setTimeout(() => {
     copyIcon.innerText = "copy_all";
@@ -72,6 +73,6 @@ const copyPassword = () => {
 };
 
 copyIcon.addEventListener("click", copyPassword);
-lenghtSlider.addEventListener("input", updateSlider);
+lengthSlider.addEventListener("input", updateSlider);
 
 generateButton.addEventListener("click", generatePassword);
